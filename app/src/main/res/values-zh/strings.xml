@@ -62,7 +62,7 @@
     <string name="app_pref_logging_summary">收集程序日志</string>
 
     <string name="app_tab_about_app_version">版本：%1$s</string>
-    <string name="app_tab_about_developer_name">开发者：Dmytro Kryvoruchko</string>
+    <string name="app_tab_about_developer_name">开发者：Dmytro Kryvoruchko/nian0114</string>
     <string name="app_tab_about_rate_app">评价程序</string>
     <string name="app_tab_about_write_email">给开发者写电子邮件</string>
     <string name="app_tab_about_email_chooser_header">正在发送电子邮件…</string>

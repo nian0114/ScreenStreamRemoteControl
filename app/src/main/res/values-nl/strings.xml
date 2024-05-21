@@ -62,7 +62,7 @@
     <string name="app_pref_logging_summary">Totaal logboek opsomming</string>
 
     <string name="app_tab_about_app_version">Versie: %1$s</string>
-    <string name="app_tab_about_developer_name">Gemaakt door Dmytro Kryvoruchko</string>
+    <string name="app_tab_about_developer_name">Gemaakt door Dmytro Kryvoruchko/nian0114</string>
     <string name="app_tab_about_rate_app">Beoordeel de app</string>
     <string name="app_tab_about_write_email">Schrijf een email naar de developer</string>
     <string name="app_tab_about_email_chooser_header">Mail word verzonden…</string>

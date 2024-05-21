@@ -62,7 +62,7 @@
     <string name="app_pref_logging_summary">Zbieraj dzienniki aplikacji</string>
 
     <string name="app_tab_about_app_version">Wersja: %1$s</string>
-    <string name="app_tab_about_developer_name">Programista Dmytro Kryvoruchko</string>
+    <string name="app_tab_about_developer_name">Programista Dmytro Kryvoruchko/nian0114</string>
     <string name="app_tab_about_rate_app">Oceń aplikację</string>
     <string name="app_tab_about_write_email">Napisz e-mail do autora</string>
     <string name="app_tab_about_email_chooser_header">Wysyłam wiadomość e-mail…</string>

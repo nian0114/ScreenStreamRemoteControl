@@ -62,7 +62,7 @@
     <string name="app_pref_logging_summary">App-Logs sammeln</string>
 
     <string name="app_tab_about_app_version">Version: %1$s</string>
-    <string name="app_tab_about_developer_name">Entwickelt von Dmytro Kryvoruchko</string>
+    <string name="app_tab_about_developer_name">Entwickelt von Dmytro Kryvoruchko/nian0114</string>
     <string name="app_tab_about_rate_app">App bewerten</string>
     <string name="app_tab_about_write_email">Entwickler per E-Mail kontaktieren</string>
     <string name="app_tab_about_email_chooser_header">E-Mail wird gesendet…</string>

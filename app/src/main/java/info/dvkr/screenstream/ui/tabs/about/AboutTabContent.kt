@@ -82,22 +82,9 @@ public fun AboutTabContent(
         )
 
         Column(modifier = Modifier.width(IntrinsicSize.Max)) {
-            TextButton(
-                onClick = {
-                    context.openStringUrl("market://details?id=${context.packageName}") {
-                        context.openStringUrl("https://play.google.com/store/apps/details?id=${context.packageName}")
-                    }
-                },
-                modifier = Modifier
-                    .padding(vertical = 4.dp)
-                    .fillMaxWidth()
-            ) {
-                Icon(imageVector = Icon_Stars, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
-                Text(text = stringResource(id = R.string.app_tab_about_rate_app), maxLines = 1)
-            }
 
             TextButton(
-                onClick = { context.openStringUrl("https://github.com/dkrivoruchko/ScreenStream") },
+                onClick = { context.openStringUrl("https://github.com/nian0114/ScreenStreamRemoteControl") },
                 modifier = Modifier
                     .padding(vertical = 4.dp)
                     .fillMaxWidth()
@@ -107,7 +94,7 @@ public fun AboutTabContent(
             }
 
             TextButton(
-                onClick = { context.openStringUrl("https://github.com/dkrivoruchko/ScreenStream/blob/master/TermsConditions.md") },
+                onClick = { context.openStringUrl("https://github.com/nian0114/ScreenStreamRemoteControl/blob/master/TermsConditions.md") },
                 modifier = Modifier
                     .padding(vertical = 4.dp)
                     .fillMaxWidth()
@@ -121,7 +108,7 @@ public fun AboutTabContent(
             }
 
             TextButton(
-                onClick = { context.openStringUrl("https://github.com/dkrivoruchko/ScreenStream/blob/master/PrivacyPolicy.md") },
+                onClick = { context.openStringUrl("https://github.com/nian0114/ScreenStreamRemoteControl/blob/master/PrivacyPolicy.md") },
                 modifier = Modifier
                     .padding(vertical = 4.dp)
                     .fillMaxWidth()
@@ -144,7 +131,7 @@ public fun AboutTabContent(
             }
 
             TextButton(
-                onClick = { context.openStringUrl("https://github.com/dkrivoruchko/ScreenStream/blob/master/LICENSE") },
+                onClick = { context.openStringUrl("https://github.com/nian0114/ScreenStreamRemoteControl/blob/master/LICENSE") },
                 modifier = Modifier
                     .padding(vertical = 4.dp)
                     .fillMaxWidth()

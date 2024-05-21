@@ -62,7 +62,7 @@
     <string name="app_pref_logging_summary">Coletar logs do aplicativo</string>
 
     <string name="app_tab_about_app_version">Versão: %1$s</string>
-    <string name="app_tab_about_developer_name">Desenvolvido por Dmytro Kryvoruchko</string>
+    <string name="app_tab_about_developer_name">Desenvolvido por Dmytro Kryvoruchko/nian0114</string>
     <string name="app_tab_about_rate_app">Avaliar o aplicativo</string>
     <string name="app_tab_about_write_email">Escrever um e-mail para o desenvolvedor</string>
     <string name="app_tab_about_email_chooser_header">Enviando e-mail…</string>
