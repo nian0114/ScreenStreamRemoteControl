@@ -320,10 +320,11 @@
         data: pinHash
       }));
     });
-    // TODO: 1920*1080 后期需要从客户端获取
     var steamClientRect = stream.getBoundingClientRect();
-    var widthZoom = stream.width / 1920
-    var heightZoom = stream.height / 1080
+    var widthZoom = 1
+    var heightZoom = 1
+    var clientHeight = 2670
+    var clientWidth = 1200
     var isdown = false
     var downEvent = null
     stream.addEventListener('touchstart', (event) => {
@@ -335,8 +336,16 @@
 
       // TODO: 应该有别的办法这里不需要每次都获取大小
       steamClientRect = stream.getBoundingClientRect();
-      widthZoom = stream.width / 1920
-      heightZoom = stream.height / 1080
+
+      if ((clientHeight > clientWidth && stream.width > stream.height) || (clientHeight < clientWidth && stream.width < stream.height)){
+        // 竖屏
+        widthZoom = stream.width / clientHeight
+        heightZoom = stream.height / clientWidth
+      } else {
+        // 横屏
+        widthZoom = stream.width / clientWidth
+        heightZoom = stream.height / clientHeight
+      }
 
       console.log(event.changedTouches[0])
       console.log(steamClientRect)
@@ -407,6 +416,8 @@
           pinDiv.style.visibility = "hidden";
           blockedDiv.style.visibility = "hidden";
           pinWrongMsg.style.visibility = "inherit";
+          clientHeight = message.data.height
+          clientWidth = message.data.width
           showStream(message.data.streamAddress + "?clientId=".concat(clientId));
           configureButtons(message.data.enableButtons);
           return;

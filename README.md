@@ -76,7 +76,7 @@ App [Privacy Policy](https://github.com/dkrivoruchko/ScreenStream/blob/master/Pr
 
 ## TODO
 
-1. Currently only supports 1920*1080 resolution and only supports horizontal screen mode
+~~1. Currently only supports 1920*1080 resolution and only supports horizontal screen mode~~
 2. When mirroring, adjust the screen brightness to the lowest setting (close to 0)
 3. Support HOME/BACK/MENU/POWER buttons
 4. Phone unlocking is not required anymore to use the launcher and Fermata. On rooted phones with LSPosed, it's possible to use other apps without unlocking.

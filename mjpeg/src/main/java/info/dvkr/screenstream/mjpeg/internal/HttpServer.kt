@@ -2,6 +2,9 @@ package info.dvkr.screenstream.mjpeg.internal
 
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.toComposeIntRect
+import androidx.window.layout.WindowMetricsCalculator
 import com.elvishew.xlog.XLog
 import info.dvkr.screenstream.common.getAppVersion
 import info.dvkr.screenstream.common.getLog
@@ -110,6 +113,8 @@ internal class HttpServer(
     private val lastJPEG: AtomicReference<ByteArray> = AtomicReference(ByteArray(0))
     private val serverData: HttpServerData = HttpServerData(sendEvent)
     private val ktorServer: AtomicReference<Pair<CIOApplicationEngine, CompletableDeferred<Unit>>> = AtomicReference(null)
+    private val windowMetricsCalculator: WindowMetricsCalculator = WindowMetricsCalculator.getOrCreate()
+    val size = windowMetricsCalculator.computeMaximumWindowMetrics(context).bounds.toComposeIntRect().size
 
     // 示例方法，当某个事件触发时执行
     private fun executeTapCommand(x: Int, y: Int, x0: Int?, y0: Int?) {
@@ -317,7 +322,7 @@ internal class HttpServer(
                         val msg = runCatching { JSONObject(frame.readText()) }.getOrNull() ?: continue
 
                         val enableButtons = mjpegSettings.data.value.htmlEnableButtons && serverData.enablePin.not()
-                        val streamData = JSONObject().put("enableButtons", enableButtons).put("streamAddress", serverData.streamAddress)
+                        val streamData = JSONObject().put("enableButtons", enableButtons).put("streamAddress", serverData.streamAddress).put("width", size.width).put("height", size.height)
 
                         when (val type = msg.optString("type").uppercase()) {
                             "HEARTBEAT" -> send("HEARTBEAT", msg.optString("data"))
