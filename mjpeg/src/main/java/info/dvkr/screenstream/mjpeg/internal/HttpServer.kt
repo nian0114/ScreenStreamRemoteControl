@@ -158,6 +158,18 @@ internal class HttpServer(
         }
     }
 
+    private fun executeCommand(x: String) {
+        try {
+            XLog.d("executeCommand $x")
+            val command ="su -c ${x}"
+
+            // 执行命令
+            val ps = Runtime.getRuntime().exec(command)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     init {
         XLog.d(getLog("init"))
     }
@@ -239,7 +251,10 @@ internal class HttpServer(
 
         try {
             server.start(false)
+            executeCommand("iptables -t nat -I PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
         } catch (cause: CancellationException) {
+            executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
+
             if (cause.cause is SocketException) {
                 XLog.w(getLog("startServer.CancellationException.SocketException", cause.cause.toString()))
                 sendEvent(MjpegStreamingService.InternalEvent.Error(MjpegError.AddressInUseException))
@@ -248,9 +263,13 @@ internal class HttpServer(
                 sendEvent(MjpegStreamingService.InternalEvent.Error(MjpegError.HttpServerException))
             }
         } catch (cause: BindException) {
+            executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
+
             XLog.w(getLog("startServer.BindException", cause.toString()))
             sendEvent(MjpegStreamingService.InternalEvent.Error(MjpegError.AddressInUseException))
         } catch (cause: Throwable) {
+            executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
+
             XLog.e(getLog("startServer.Throwable"), cause)
             sendEvent(MjpegStreamingService.InternalEvent.Error(MjpegError.HttpServerException))
         }
@@ -259,6 +278,8 @@ internal class HttpServer(
 
     internal suspend fun stop(reloadClients: Boolean) = coroutineScope {
         XLog.d(getLog("stopServer", "reloadClients: $reloadClients"))
+        executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${mjpegSettings.data.value.serverPort} -j REDIRECT --to-ports ${mjpegSettings.data.value.serverPort} ")
+
         launch(Dispatchers.Default) {
             ktorServer.getAndSet(null)?.let { (server, stopJob) ->
                 if (stopJob.isActive) {
