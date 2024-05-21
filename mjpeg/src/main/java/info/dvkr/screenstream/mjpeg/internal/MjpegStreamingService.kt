@@ -88,6 +88,7 @@ internal class MjpegStreamingService(
     private var slowClients: List<MjpegState.Client> = emptyList()
     private var traffic: List<MjpegState.TrafficPoint> = emptyList()
     private var isStreaming: Boolean = false
+    private var isLighted: Boolean = false
     private var waitingForPermission: Boolean = false
     private var mediaProjectionIntent: Intent? = null
     private var mediaProjection: MediaProjection? = null
@@ -104,6 +105,7 @@ internal class MjpegStreamingService(
         data class StartServer(val interfaces: List<MjpegNetInterface>) : InternalEvent(Priority.RESTART_IGNORE)
         data object StartStream : InternalEvent(Priority.RESTART_IGNORE)
         data object StartStopFromWebPage : InternalEvent(Priority.RESTART_IGNORE)
+        data object LigthFromWebPage : InternalEvent(Priority.RESTART_IGNORE)
         data object ScreenOff : InternalEvent(Priority.RESTART_IGNORE)
         data class ConfigurationChange(val newConfig: Configuration) : InternalEvent(Priority.RESTART_IGNORE) {
             override fun toString(): String = "ConfigurationChange"
@@ -295,6 +297,32 @@ internal class MjpegStreamingService(
         true
     }
 
+    private fun turnOnLight() {
+        var command ="su -c settings put system screen_brightness_mode ${lastAutoBrightness}"
+        executeCommandWithRoot(command)
+
+        command ="su -c echo ${lastBrightness} > /sys/class/leds/lcd-backlight/brightness"
+        executeCommandWithRoot(command)
+    }
+
+    private fun turnOffLight() {
+        var command ="su -c settings get system screen_brightness_mode"
+        var brightnessRes = executeCommandWithRoot(command)
+        lastAutoBrightness = brightnessRes?.toIntOrNull() ?: 1
+
+        command ="su -c cat /sys/class/leds/lcd-backlight/brightness"
+        brightnessRes = executeCommandWithRoot(command)
+        lastBrightness = brightnessRes?.toIntOrNull() ?: 125
+
+        command ="su -c settings put system screen_brightness_mode 0"
+        executeCommandWithRoot(command)
+
+        command ="su -c echo 0 > /sys/class/leds/lcd-backlight/brightness"
+        executeCommandWithRoot(command)
+        XLog.d("亮度数值: $lastBrightness 系统自动亮度: $lastAutoBrightness")
+    }
+
+
     // On MJPEG-HT only
     private suspend fun processEvent(event: MjpegEvent) {
         when (event) {
@@ -361,6 +389,17 @@ internal class MjpegStreamingService(
                 }
             }
 
+            is InternalEvent.LigthFromWebPage -> {
+                if (isLighted){
+                    turnOffLight()
+                    isLighted = false
+                } else {
+                    turnOnLight()
+                    isLighted = true
+                }
+
+            }
+
             is MjpegEvent.CastPermissionsDenied -> waitingForPermission = false
 
             is MjpegEvent.StartProjection ->
@@ -371,21 +410,7 @@ internal class MjpegStreamingService(
                     waitingForPermission = false
                     check(isStreaming.not()) { "MjpegEvent.StartProjection: Already streaming" }
 
-                    var command ="su -c settings get system screen_brightness_mode"
-                    var brightnessRes = executeCommandWithRoot(command)
-                    lastAutoBrightness = brightnessRes?.toIntOrNull() ?: 1
-
-                    command ="su -c cat /sys/class/leds/lcd-backlight/brightness"
-                    brightnessRes = executeCommandWithRoot(command)
-                    lastBrightness = brightnessRes?.toIntOrNull() ?: 125
-
-                    command ="su -c settings put system screen_brightness_mode 0"
-                    executeCommandWithRoot(command)
-
-                    command ="su -c echo 0 > /sys/class/leds/lcd-backlight/brightness"
-                    executeCommandWithRoot(command)
-                    XLog.d("亮度数值: $lastBrightness 系统自动亮度: $lastAutoBrightness")
-
+                    turnOffLight()
                     service.startForeground()
 
                     // TODO Starting from Android R, if your application requests the SYSTEM_ALERT_WINDOW permission, and the user has
@@ -417,12 +442,8 @@ internal class MjpegStreamingService(
                 }
 
             is MjpegEvent.Intentable.StopStream -> {
+                turnOnLight()
                 stopStream()
-                var command ="su -c settings put system screen_brightness_mode ${lastAutoBrightness}"
-                executeCommandWithRoot(command)
-
-                command ="su -c echo ${lastBrightness} > /sys/class/leds/lcd-backlight/brightness"
-                executeCommandWithRoot(command)
 
                 if (mjpegSettings.data.value.enablePin && mjpegSettings.data.value.autoChangePin)
                     mjpegSettings.updateData { copy(pin = randomPin()) }

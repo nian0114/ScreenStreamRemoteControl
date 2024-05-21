@@ -318,6 +318,10 @@ internal class HttpServer(
                     sendEvent(MjpegStreamingService.InternalEvent.StartStopFromWebPage)
                 call.respond(HttpStatusCode.NoContent)
             }
+            get("light") {
+                sendEvent(MjpegStreamingService.InternalEvent.LigthFromWebPage)
+                call.respond(HttpStatusCode.NoContent)
+            }
             get(serverData.jpegFallbackAddress) {
                 if (serverData.isAddressBlocked(call.request.origin.remoteAddress)) call.respond(HttpStatusCode.Forbidden)
                 else {
