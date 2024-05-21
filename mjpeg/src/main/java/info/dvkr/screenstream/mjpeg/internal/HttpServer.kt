@@ -111,6 +111,27 @@ internal class HttpServer(
     private val serverData: HttpServerData = HttpServerData(sendEvent)
     private val ktorServer: AtomicReference<Pair<CIOApplicationEngine, CompletableDeferred<Unit>>> = AtomicReference(null)
 
+    // 示例方法，当某个事件触发时执行
+    private fun executeTapCommand(x: Int, y: Int, x0: Int?, y0: Int?) {
+        try {
+            var command = ""
+            XLog.d("executeTapCommand")
+            XLog.d(x)
+            XLog.d(y)
+            command = if (x0 == null && y0 == null) {
+                // 构建 shell 命令
+                "su -c input tap $x $y"
+            } else {
+                "su -c input swipe $x0 $y0 $x $y"
+            }
+
+            // 执行命令
+            val ps = Runtime.getRuntime().exec(command)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     init {
         XLog.d(getLog("init"))
     }
@@ -300,6 +321,15 @@ internal class HttpServer(
 
                         when (val type = msg.optString("type").uppercase()) {
                             "HEARTBEAT" -> send("HEARTBEAT", msg.optString("data"))
+
+                            "MOUSEUP" -> {
+                                val clientX: Int = msg.optString("clientX").toInt()
+                                val clientY: Int = msg.optString("clientY").toInt()
+                                val clientX0: Int ?= msg.optString("clientX0").toIntOrNull()
+                                val clientY0: Int ?= msg.optString("clientY0").toIntOrNull()
+                                executeTapCommand(clientX, clientY, clientX0, clientY0)
+                                send("MOUSEUPX", msg.optString("type"))
+                            }
 
                             "CONNECT" -> when {
                                 mjpegSettings.data.value.enablePin.not() -> send("STREAM_ADDRESS", streamData)

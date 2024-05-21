@@ -320,6 +320,51 @@
         data: pinHash
       }));
     });
+    // TODO: 1920*1080 后期需要从客户端获取
+    var steamClientRect = stream.getBoundingClientRect();
+    var widthZoom = stream.width / 1920
+    var heightZoom = stream.height / 1080
+    var isdown = false
+    var downEvent = null
+    stream.addEventListener('touchstart', (event) => {
+      isdown = true
+      downEvent = event
+    });
+    stream.addEventListener('touchend', (event) => {
+      isdown = false
+
+      // TODO: 应该有别的办法这里不需要每次都获取大小
+      steamClientRect = stream.getBoundingClientRect();
+      widthZoom = stream.width / 1920
+      heightZoom = stream.height / 1080
+
+      console.log(event.changedTouches[0])
+      console.log(steamClientRect)
+      console.log(stream.width)
+      console.log(stream.height)
+
+      var jsonMessage = {
+        type: "MOUSEUP",
+        clientX: Math.round((event.changedTouches[0].clientX - steamClientRect.left) / widthZoom),
+        clientY: Math.round((event.changedTouches[0].clientY - steamClientRect.top) / heightZoom)
+      }
+
+      if (downEvent 
+      && downEvent.changedTouches[0].clientY == event.changedTouches[0].clientY 
+      && downEvent.changedTouches[0].clientY == event.changedTouches[0].clientY) {
+        // same
+      } else {
+        jsonMessage["clientX0"] = Math.round((downEvent.changedTouches[0].clientX - steamClientRect.left) / widthZoom)
+        jsonMessage["clientY0"] = Math.round((downEvent.changedTouches[0].clientY - steamClientRect.top) / widthZoom)
+      }
+
+      if (websocket) websocket.send(
+        JSON.stringify(jsonMessage)
+
+      );
+
+      downEvent = null
+    });
     var websocket = null;
     var showStreamTimeoutId = null;
     var MJPEGErrorCounter = 0;
