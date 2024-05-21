@@ -137,6 +137,27 @@ internal class HttpServer(
         }
     }
 
+    // 示例方法，当某个事件触发时执行
+    private fun executeKeyTapCommand(x: String) {
+        try {
+            val keycode = when (x) {
+                "back" -> 4
+                "power" -> 26
+                "home" -> 3
+                "menu" -> 82
+                else -> 0
+            }
+
+            XLog.d("executeKeyTapCommand $x $keycode")
+            val command ="su -c input keyevent $keycode"
+
+            // 执行命令
+            val ps = Runtime.getRuntime().exec(command)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     init {
         XLog.d(getLog("init"))
     }
@@ -334,6 +355,11 @@ internal class HttpServer(
                                 val clientY0: Int ?= msg.optString("clientY0").toIntOrNull()
                                 executeTapCommand(clientX, clientY, clientX0, clientY0)
                                 send("MOUSEUPX", msg.optString("type"))
+                            }
+
+                            "KEYEVENT" -> {
+                                executeKeyTapCommand(msg.optString("keyevent"))
+                                send("KEYEVENT", null)
                             }
 
                             "CONNECT" -> when {

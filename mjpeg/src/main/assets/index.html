@@ -211,9 +211,28 @@
   <div id="streamDiv"><img id="stream" /></div>
 
   <div id="buttonsDiv">
-    <input type="image" id="fullscreen" style="width:24px;height:24px;margin:4px;" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFF' d='M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z' /%3E%3C/svg%3E" onclick="toggleFullscreen()" />
-    <input type="image" style="width:24px;height:24px;margin:4px;" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFF' d='M3,5V19L11,12M13,19H16V5H13M18,5V19H21V5' /%3E%3C/svg%3E" onclick="toggleStartStop()" />
-    <input type="image" id="PiP" style="width:24px;height:24px;margin:4px;" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFF' d='M19 11h-8v6h8v-6m4 8V5c0-1.12-.9-2-2-2H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2m-2 0H3V4.97h18V19Z'/%3E%3C/svg%3E" onclick="togglePiP()" />
+    <input type="image" id="power" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB0PSIxNzE2Mjk3NDg1MzQ0IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9Ijg5MyIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiPjxwYXRoIGQ9Ik03MDUuNiAxMjQuOWMtNS4zLTIuNy0xMS42IDEuMi0xMS42IDcuMnY2NC4yYzAgNS41IDIuOSAxMC42IDcuNSAxMy42IDIyLjQgMTQuMSA0My4yIDMwLjcgNjIuMiA0OS44IDMyLjcgMzIuOCA1OC40IDcwLjkgNzYuMyAxMTMuMyAxOC41IDQzLjkgMjcuOSA5MC41IDI3LjkgMTM4LjcgMCA0OC4xLTkuNCA5NC44LTI3LjkgMTM4LjctMTcuOSA0Mi40LTQzLjYgODAuNS03Ni4zIDExMy4zLTMyLjcgMzIuOC03MC44IDU4LjUtMTEzLjIgNzYuNC00My44IDE4LjYtOTAuNSAyOC0xMzguNSAyOHMtOTQuNy05LjQtMTM4LjUtMjhjLTQyLjQtMTcuOS04MC41LTQzLjYtMTEzLjItNzYuNC0zMi43LTMyLjgtNTguNC03MC45LTc2LjMtMTEzLjMtMTguNS00My45LTI3LjktOTAuNS0yNy45LTEzOC43IDAtNDguMSA5LjQtOTQuOCAyNy45LTEzOC43IDE3LjktNDIuNCA0My42LTgwLjUgNzYuMy0xMTMuMyAxOS0xOSAzOS44LTM1LjYgNjIuMi00OS44IDQuNy0yLjkgNy41LTguMSA3LjUtMTMuNlYxMzJjMC02LTYuMy05LjgtMTEuNi03LjJDMTc4LjUgMTk1LjIgODIgMzM5LjMgODAgNTA2LjMgNzcuMiA3NDUuMSAyNzIuNSA5NDMuNSA1MTEuMiA5NDRjMjM5IDAuNSA0MzIuOC0xOTMuMyA0MzIuOC00MzIuNCAwLTE2OS4yLTk3LTMxNS43LTIzOC40LTM4Ni43eiIgcC1pZD0iODk0IiBmaWxsPSIjZmZmZmZmIj48L3BhdGg+PHBhdGggZD0iTTQ4MCA1NjBoNjRjNC40IDAgOC0zLjYgOC04Vjg4YzAtNC40LTMuNi04LTgtOGgtNjRjLTQuNCAwLTggMy42LTggOHY0NjRjMCA0LjQgMy42IDggOCA4eiIgcC1pZD0iODk1IiBmaWxsPSIjZmZmZmZmIj48L3BhdGg+PC9zdmc+"
+      onclick="sendKeyevent('power')">
+    <input type="image" id="home" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB0PSIxNzE2Mjk2ODM4MzY2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjExODEiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNOTQ2LjUgNTA1TDU2MC4xIDExOC44bC0yNS45LTI1LjljLTEyLjMtMTIuMi0zMi4xLTEyLjItNDQuNCAwTDc3LjUgNTA1Yy0xMi4zIDEyLjMtMTguOSAyOC42LTE4LjggNDYgMC40IDM1LjIgMjkuNyA2My4zIDY0LjkgNjMuM2g0Mi41Vjk0MGg2OTEuOFY2MTQuM2g0My40YzE3LjEgMCAzMy4yLTYuNyA0NS4zLTE4LjggMTIuMS0xMi4xIDE4LjctMjguMiAxOC43LTQ1LjMgMC0xNy02LjctMzMuMS0xOC44LTQ1LjJ6TTU2OCA4NjhINDU2VjY2NGgxMTJ2MjA0eiBtMjE3LjktMzI1LjdWODY4SDYzMlY2NDBjMC0yMi4xLTE3LjktNDAtNDAtNDBINDMyYy0yMi4xIDAtNDAgMTcuOS00MCA0MHYyMjhIMjM4LjFWNTQyLjNoLTk2bDM3MC0zNjkuNyAyMy4xIDIzLjFMODgyIDU0Mi4zaC05Ni4xeiIgcC1pZD0iMTE4MiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjwvc3ZnPg=="
+      onclick="sendKeyevent('home')" >
+    <input type="image" id="back" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB0PSIxNzE2Mjk3NjM5MzcxIiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjEwNzMiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNNzkzIDI0MkgzNjZ2LTc0YzAtNi43LTcuNy0xMC40LTEyLjktNi4zbC0xNDIgMTEyYy00LjEgMy4yLTQuMSA5LjQgMCAxMi42bDE0MiAxMTJjNS4yIDQuMSAxMi45IDAuNCAxMi45LTYuM3YtNzRoNDE1djQ3MEgxNzVjLTQuNCAwLTggMy42LTggOHY2MGMwIDQuNCAzLjYgOCA4IDhoNjE4YzM1LjMgMCA2NC0yOC43IDY0LTY0VjMwNmMwLTM1LjMtMjguNy02NC02NC02NHoiIHAtaWQ9IjEwNzQiIGZpbGw9IiNmZmZmZmYiPjwvcGF0aD48L3N2Zz4="
+      onclick="sendKeyevent('back')">
+    <input type="image" id="menu" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB0PSIxNzE2Mjk3NjU4MDc4IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjEyNTIiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNOTA0IDE2MEgxMjBjLTQuNCAwLTggMy42LTggOHY2NGMwIDQuNCAzLjYgOCA4IDhoNzg0YzQuNCAwIDgtMy42IDgtOHYtNjRjMC00LjQtMy42LTgtOC04ek05MDQgNzg0SDEyMGMtNC40IDAtOCAzLjYtOCA4djY0YzAgNC40IDMuNiA4IDggOGg3ODRjNC40IDAgOC0zLjYgOC04di02NGMwLTQuNC0zLjYtOC04LTh6TTkwNCA0NzJIMTIwYy00LjQgMC04IDMuNi04IDh2NjRjMCA0LjQgMy42IDggOCA4aDc4NGM0LjQgMCA4LTMuNiA4LTh2LTY0YzAtNC40LTMuNi04LTgtOHoiIHAtaWQ9IjEyNTMiIGZpbGw9IiNmZmZmZmYiPjwvcGF0aD48L3N2Zz4="
+      onclick="sendKeyevent('menu')">
+
+    <input type="image" id="fullscreen" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFF' d='M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z' /%3E%3C/svg%3E"
+      onclick="toggleFullscreen()" />
+    <input type="image" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFF' d='M3,5V19L11,12M13,19H16V5H13M18,5V19H21V5' /%3E%3C/svg%3E"
+      onclick="toggleStartStop()" />
+    <input type="image" id="PiP" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFF' d='M19 11h-8v6h8v-6m4 8V5c0-1.12-.9-2-2-2H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2m-2 0H3V4.97h18V19Z'/%3E%3C/svg%3E"
+      onclick="togglePiP()" />
   </div>
 
   <div id="pinDiv" style="visibility: hidden;">
@@ -306,6 +325,14 @@
     }
     function toggleFullscreen() {
       isFullscreen() ? fullScreenExit() : fullScreen(document.documentElement);
+    }
+    function sendKeyevent(keyevent) {
+      if (websocket) websocket.send(
+        JSON.stringify({
+          type: "KEYEVENT",
+          keyevent: keyevent
+        })
+      );
     }
     function toggleStartStop() {
       var xmlHttp = new XMLHttpRequest();
