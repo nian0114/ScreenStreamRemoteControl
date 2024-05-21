@@ -320,6 +320,24 @@
         data: pinHash
       }));
     });
+    var steamClientRect = stream.getBoundingClientRect();
+    var widthZoom = stream.width / 1920
+    var heightZoom = stream.height / 1080
+    stream.addEventListener('touchend', (event) => {
+      steamClientRect = stream.getBoundingClientRect();
+      widthZoom = stream.width / 1920
+      heightZoom = stream.height / 1080
+
+      if (websocket) websocket.send(
+        JSON.stringify(
+          {
+            type: "MOUSEUP",
+            clientX: Math.round((event.changedTouches[0].clientX - steamClientRect.left) / widthZoom),
+            clientY: Math.round((event.changedTouches[0].clientY - steamClientRect.top) / heightZoom)
+          }
+        )
+      );
+    });
     var websocket = null;
     var showStreamTimeoutId = null;
     var MJPEGErrorCounter = 0;

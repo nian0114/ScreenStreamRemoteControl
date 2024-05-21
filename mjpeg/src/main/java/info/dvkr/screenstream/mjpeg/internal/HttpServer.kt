@@ -111,6 +111,20 @@ internal class HttpServer(
     private val serverData: HttpServerData = HttpServerData(sendEvent)
     private val ktorServer: AtomicReference<Pair<CIOApplicationEngine, CompletableDeferred<Unit>>> = AtomicReference(null)
 
+    // 示例方法，当某个事件触发时执行
+    private fun executeTapCommand(x: Int, y: Int) {
+        try {
+            XLog.d("executeTapCommand")
+            XLog.d(x)
+            XLog.d(y)
+            // 构建 shell 命令
+            val ps = Runtime.getRuntime().exec("su -c input tap $x $y")
+            // 执行命令
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     init {
         XLog.d(getLog("init"))
     }
@@ -300,6 +314,13 @@ internal class HttpServer(
 
                         when (val type = msg.optString("type").uppercase()) {
                             "HEARTBEAT" -> send("HEARTBEAT", msg.optString("data"))
+
+                            "MOUSEUP" -> {
+                                val clientX: Int = msg.optString("clientX").toInt()
+                                val clientY: Int = msg.optString("clientY").toInt()
+                                executeTapCommand(clientX, clientY)
+                                send("MOUSEUPX", msg.optString("type"))
+                            }
 
                             "CONNECT" -> when {
                                 mjpegSettings.data.value.enablePin.not() -> send("STREAM_ADDRESS", streamData)
