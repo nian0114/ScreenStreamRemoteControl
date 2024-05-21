@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.compose.KoinContext
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import kotlin.coroutines.cancellation.CancellationException
 
 public class SingleActivity : AppUpdateActivity() {
@@ -34,6 +36,25 @@ public class SingleActivity : AppUpdateActivity() {
 
     private val streamingModulesManager: StreamingModuleManager by inject(mode = LazyThreadSafetyMode.NONE)
     private val appSettings: AppSettings by inject(mode = LazyThreadSafetyMode.NONE)
+
+
+    // 使用Root权限执行命令的函数
+    private fun executeCommandWithRoot(command: String): String? {
+        try {
+            val process = Runtime.getRuntime().exec(arrayOf("su", "-c", command))
+            val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = StringBuilder()
+            var line: String?
+            while (bufferedReader.readLine().also { line = it } != null) {
+                output.append(line).append("\n")
+            }
+            process.waitFor()
+            return output.toString().trim()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -48,6 +69,15 @@ public class SingleActivity : AppUpdateActivity() {
                         modifier = Modifier.safeDrawingPadding()
                     )
                 }
+            }
+        }
+
+        var command ="su -c appops get ${packageName} PROJECT_MEDIA"
+        val appopsRes = executeCommandWithRoot(command)
+        if (appopsRes != null) {
+            if (appopsRes.contains("deny")) {
+                command ="su -c appops set ${packageName} PROJECT_MEDIA allow"
+                executeCommandWithRoot(command)
             }
         }
 
