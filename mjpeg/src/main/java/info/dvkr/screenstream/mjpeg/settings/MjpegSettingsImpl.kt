@@ -140,6 +140,12 @@ internal class MjpegSettingsImpl(
 
                 if (newSettings.serverPort != MjpegSettings.Default.SERVER_PORT)
                     set(MjpegSettings.Key.SERVER_PORT, newSettings.serverPort)
+
+                if (newSettings.brightnessViaSU != MjpegSettings.Default.USE_BRIGHTNESS_VIA_SU)
+                    set(MjpegSettings.Key.USE_BRIGHTNESS_VIA_SU, newSettings.brightnessViaSU)
+
+                if (newSettings.brightnessViaFakeScreen != MjpegSettings.Default.USE_BRIGHTNESS_VIA_FAKESCREEN)
+                    set(MjpegSettings.Key.USE_BRIGHTNESS_VIA_FAKESCREEN, newSettings.brightnessViaFakeScreen)
             }
         }
         Unit
@@ -178,5 +184,7 @@ internal class MjpegSettingsImpl(
         enableLocalHost = this[MjpegSettings.Key.ENABLE_LOCAL_HOST] ?: MjpegSettings.Default.ENABLE_LOCAL_HOST,
         localHostOnly = this[MjpegSettings.Key.LOCAL_HOST_ONLY] ?: MjpegSettings.Default.LOCAL_HOST_ONLY,
         serverPort = this[MjpegSettings.Key.SERVER_PORT] ?: MjpegSettings.Default.SERVER_PORT,
+        brightnessViaSU = this[MjpegSettings.Key.USE_BRIGHTNESS_VIA_SU] ?: MjpegSettings.Default.USE_BRIGHTNESS_VIA_SU,
+        brightnessViaFakeScreen = this[MjpegSettings.Key.USE_BRIGHTNESS_VIA_FAKESCREEN] ?: MjpegSettings.Default.USE_BRIGHTNESS_VIA_FAKESCREEN,
     )
 }
