@@ -298,28 +298,36 @@ internal class MjpegStreamingService(
     }
 
     private fun turnOnLight() {
-        var command ="su -c settings put system screen_brightness_mode ${lastAutoBrightness}"
-        executeCommandWithRoot(command)
+        if (mjpegSettings.data.value.brightnessViaSU) {
+            var command = "su -c settings put system screen_brightness_mode ${lastAutoBrightness}"
+            executeCommandWithRoot(command)
 
-        command ="su -c echo ${lastBrightness} > /sys/class/leds/lcd-backlight/brightness"
-        executeCommandWithRoot(command)
+            command = "su -c echo ${lastBrightness} > /sys/class/leds/lcd-backlight/brightness"
+            executeCommandWithRoot(command)
+        } else if (mjpegSettings.data.value.brightnessViaFakeScreen) {
+            executeCommandWithRoot("input keyevent 26")
+        }
     }
 
     private fun turnOffLight() {
-        var command ="su -c settings get system screen_brightness_mode"
-        var brightnessRes = executeCommandWithRoot(command)
-        lastAutoBrightness = brightnessRes?.toIntOrNull() ?: 1
+        if (mjpegSettings.data.value.brightnessViaSU) {
+            var command = "su -c settings get system screen_brightness_mode"
+            var brightnessRes = executeCommandWithRoot(command)
+            lastAutoBrightness = brightnessRes?.toIntOrNull() ?: 1
 
-        command ="su -c cat /sys/class/leds/lcd-backlight/brightness"
-        brightnessRes = executeCommandWithRoot(command)
-        lastBrightness = brightnessRes?.toIntOrNull() ?: 125
+            command = "su -c cat /sys/class/leds/lcd-backlight/brightness"
+            brightnessRes = executeCommandWithRoot(command)
+            lastBrightness = brightnessRes?.toIntOrNull() ?: 125
 
-        command ="su -c settings put system screen_brightness_mode 0"
-        executeCommandWithRoot(command)
+            command = "su -c settings put system screen_brightness_mode 0"
+            executeCommandWithRoot(command)
 
-        command ="su -c echo 0 > /sys/class/leds/lcd-backlight/brightness"
-        executeCommandWithRoot(command)
-        XLog.d("亮度数值: $lastBrightness 系统自动亮度: $lastAutoBrightness")
+            command = "su -c echo 0 > /sys/class/leds/lcd-backlight/brightness"
+            executeCommandWithRoot(command)
+            XLog.d("亮度数值: $lastBrightness 系统自动亮度: $lastAutoBrightness")
+        } else if (mjpegSettings.data.value.brightnessViaFakeScreen) {
+            executeCommandWithRoot("input keyevent 26")
+        }
     }
 
 

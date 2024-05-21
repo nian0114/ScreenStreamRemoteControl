@@ -132,6 +132,10 @@
     <string name="mjpeg_pref_server_port">Server port</string>
     <string name="mjpeg_pref_server_port_summary">Set port for incoming connections</string>
     <string name="mjpeg_pref_server_port_text">Set server port for incoming connections.\nValues: 1025–65535\nDefault: 8080</string>
+    <string name="mjpeg_pref_brightness_via_su">Set Brightness 0</string>
+    <string name="mjpeg_pref_brightness_via_su_summary">Set Brightness to 0 via kernel node(root need)</string>
+    <string name="mjpeg_pref_brightness_via_fakescreen">Set Brightness By FakeScreen</string>
+    <string name="mjpeg_pref_brightness_via_fakescreen_summary">Set Brightness to 0 via FakeScreen plugin(xposed need)</string>
 
     <string name="mjpeg_error_port_in_use">Port already in use. Choose another one.</string>
     <string name="mjpeg_error_invalid_media_projection">Security error: Invalid media projection. Try one more time.</string>
