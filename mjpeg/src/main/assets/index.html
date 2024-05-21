@@ -224,6 +224,9 @@
       src="data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB0PSIxNzE2Mjk3NjU4MDc4IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjEyNTIiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNOTA0IDE2MEgxMjBjLTQuNCAwLTggMy42LTggOHY2NGMwIDQuNCAzLjYgOCA4IDhoNzg0YzQuNCAwIDgtMy42IDgtOHYtNjRjMC00LjQtMy42LTgtOC04ek05MDQgNzg0SDEyMGMtNC40IDAtOCAzLjYtOCA4djY0YzAgNC40IDMuNiA4IDggOGg3ODRjNC40IDAgOC0zLjYgOC04di02NGMwLTQuNC0zLjYtOC04LTh6TTkwNCA0NzJIMTIwYy00LjQgMC04IDMuNi04IDh2NjRjMCA0LjQgMy42IDggOCA4aDc4NGM0LjQgMCA4LTMuNiA4LTh2LTY0YzAtNC40LTMuNi04LTgtOHoiIHAtaWQ9IjEyNTMiIGZpbGw9IiNmZmZmZmYiPjwvcGF0aD48L3N2Zz4="
       onclick="sendKeyevent('menu')">
 
+    <input type="image" id="menu" style="width:24px;height:24px;margin:4px;"
+      src="data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB0PSIxNzE2MzA1MDg3NTY1IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjkyMiIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiPjxwYXRoIGQ9Ik05MjggMTQwSDk2Yy0xNy43IDAtMzIgMTQuMy0zMiAzMnY0OTZjMCAxNy43IDE0LjMgMzIgMzIgMzJoMzgwdjExMkgzMDRjLTguOCAwLTE2IDcuMi0xNiAxNnY0OGMwIDQuNCAzLjYgOCA4IDhoNDMyYzQuNCAwIDgtMy42IDgtOHYtNDhjMC04LjgtNy4yLTE2LTE2LTE2SDU0OFY3MDBoMzgwYzE3LjcgMCAzMi0xNC4zIDMyLTMyVjE3MmMwLTE3LjctMTQuMy0zMi0zMi0zMnogbS00MCA0ODhIMTM2VjIxMmg3NTJ2NDE2eiIgcC1pZD0iOTIzIiBmaWxsPSIjZmZmZmZmIj48L3BhdGg+PC9zdmc+"
+      onclick="toggleLight()">
     <input type="image" id="fullscreen" style="width:24px;height:24px;margin:4px;"
       src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFF' d='M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z' /%3E%3C/svg%3E"
       onclick="toggleFullscreen()" />
@@ -325,6 +328,11 @@
     }
     function toggleFullscreen() {
       isFullscreen() ? fullScreenExit() : fullScreen(document.documentElement);
+    }
+    function toggleLight() {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", window.location.origin + "/light", true);
+      xmlHttp.send(null);
     }
     function sendKeyevent(keyevent) {
       if (websocket) websocket.send(
