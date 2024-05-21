@@ -44,6 +44,8 @@ public interface MjpegSettings {
         public val ENABLE_LOCAL_HOST: Preferences.Key<Boolean> = booleanPreferencesKey("ENABLE_LOCAL_HOST")
         public val LOCAL_HOST_ONLY: Preferences.Key<Boolean> = booleanPreferencesKey("LOCAL_HOST_ONLY")
         public val SERVER_PORT: Preferences.Key<Int> = intPreferencesKey("SERVER_PORT")
+        public val USE_BRIGHTNESS_VIA_SU: Preferences.Key<Boolean> = booleanPreferencesKey("USE_BRIGHTNESS_VIA_SU")
+        public val USE_BRIGHTNESS_VIA_FAKESCREEN: Preferences.Key<Boolean> = booleanPreferencesKey("USE_BRIGHTNESS_VIA_FAKESCREEN")
     }
 
     public object Default {
@@ -82,6 +84,8 @@ public interface MjpegSettings {
         public const val ENABLE_LOCAL_HOST: Boolean = false
         public const val LOCAL_HOST_ONLY: Boolean = false
         public const val SERVER_PORT: Int = 8080
+        public const val USE_BRIGHTNESS_VIA_SU: Boolean = false
+        public const val USE_BRIGHTNESS_VIA_FAKESCREEN: Boolean = false
     }
 
     public object Values {
@@ -127,6 +131,8 @@ public interface MjpegSettings {
         public val enableLocalHost: Boolean = Default.ENABLE_LOCAL_HOST,
         public val localHostOnly: Boolean = Default.LOCAL_HOST_ONLY,
         public val serverPort: Int = Default.SERVER_PORT,
+        public val brightnessViaSU: Boolean = Default.USE_BRIGHTNESS_VIA_SU,
+        public val brightnessViaFakeScreen: Boolean = Default.USE_BRIGHTNESS_VIA_FAKESCREEN,
     )
 
     public val data: StateFlow<Data>

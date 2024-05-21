@@ -12,12 +12,14 @@ import info.dvkr.screenstream.mjpeg.ui.settings.advanced.EnableLocalhost
 import info.dvkr.screenstream.mjpeg.ui.settings.advanced.LocalhostOnly
 import info.dvkr.screenstream.mjpeg.ui.settings.advanced.ServerPort
 import info.dvkr.screenstream.mjpeg.ui.settings.advanced.WifiOnly
+import info.dvkr.screenstream.mjpeg.ui.settings.advanced.BrightnessSU
+import info.dvkr.screenstream.mjpeg.ui.settings.advanced.BrightnessFakeScreen
 
 public data object AdvancedGroup : ModuleSettings.Group {
     override val id: String = "ADVANCED"
     override val position: Int = 4
     override val items: List<ModuleSettings.Item> =
-        listOf(WifiOnly, EnableIPv6, EnableLocalhost, LocalhostOnly, ServerPort)
+        listOf(WifiOnly, EnableIPv6, EnableLocalhost, LocalhostOnly, ServerPort, BrightnessSU, BrightnessFakeScreen)
             .filter { it.available }.sortedBy { it.position }
 
     @Composable

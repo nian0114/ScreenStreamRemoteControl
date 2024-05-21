@@ -124,6 +124,10 @@
     <string name="mjpeg_pref_server_port">服务器端口</string>
     <string name="mjpeg_pref_server_port_summary">设置传入连接的端口</string>
     <string name="mjpeg_pref_server_port_text">设置传入连接的服务器端口。\n值的范围：1025–65535\n默认：8080</string>
+    <string name="mjpeg_pref_brightness_via_su">息屏投影</string>
+    <string name="mjpeg_pref_brightness_via_su_summary">在一些旧设备上支持息屏的情况下操作设备(需要ROOT权限)</string>
+    <string name="mjpeg_pref_brightness_via_fakescreen">息屏投影(FakeScreen)</string>
+    <string name="mjpeg_pref_brightness_via_fakescreen_summary">通过FakeScreen在息屏的情况下操作设备(需要XPOSED权限)</string>
 
     <string name="mjpeg_error_port_in_use">此端口已被占用。请另选一个。</string>
     <string name="mjpeg_error_invalid_media_projection">安全错误：无效的媒体投影。请再试一次。</string>
