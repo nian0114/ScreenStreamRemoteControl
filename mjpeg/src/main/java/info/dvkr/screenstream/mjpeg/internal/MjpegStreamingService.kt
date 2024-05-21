@@ -50,6 +50,8 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Scope
 import org.koin.core.annotation.Scoped
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import kotlin.random.Random
 
 @Scope(MjpegKoinScope::class)
@@ -92,6 +94,8 @@ internal class MjpegStreamingService(
     private var bitmapCapture: BitmapCapture? = null
     private var currentError: MjpegError? = null
     private var previousError: MjpegError? = null
+    private var lastBrightness: Int = 125
+    private var lastAutoBrightness: Int = 1
     // All vars must be read/write on this (WebRTC-HT) thread
 
     internal sealed class InternalEvent(priority: Int) : MjpegEvent(priority) {
@@ -146,6 +150,25 @@ internal class MjpegStreamingService(
             sendEvent(InternalEvent.CapturedContentResize(width, height))
         }
     }
+
+    // 使用Root权限执行命令的函数
+    private fun executeCommandWithRoot(command: String): String? {
+        try {
+            val process = Runtime.getRuntime().exec(arrayOf("su", "-c", command))
+            val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = StringBuilder()
+            var line: String?
+            while (bufferedReader.readLine().also { line = it } != null) {
+                output.append(line).append("\n")
+            }
+            process.waitFor()
+            return output.toString().trim()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
 
     init {
         XLog.d(getLog("init"))
@@ -348,6 +371,21 @@ internal class MjpegStreamingService(
                     waitingForPermission = false
                     check(isStreaming.not()) { "MjpegEvent.StartProjection: Already streaming" }
 
+                    var command ="su -c settings get system screen_brightness_mode"
+                    var brightnessRes = executeCommandWithRoot(command)
+                    lastAutoBrightness = brightnessRes?.toIntOrNull() ?: 1
+
+                    command ="su -c cat /sys/class/leds/lcd-backlight/brightness"
+                    brightnessRes = executeCommandWithRoot(command)
+                    lastBrightness = brightnessRes?.toIntOrNull() ?: 125
+
+                    command ="su -c settings put system screen_brightness_mode 0"
+                    executeCommandWithRoot(command)
+
+                    command ="su -c echo 0 > /sys/class/leds/lcd-backlight/brightness"
+                    executeCommandWithRoot(command)
+                    XLog.d("亮度数值: $lastBrightness 系统自动亮度: $lastAutoBrightness")
+
                     service.startForeground()
 
                     // TODO Starting from Android R, if your application requests the SYSTEM_ALERT_WINDOW permission, and the user has
@@ -380,6 +418,11 @@ internal class MjpegStreamingService(
 
             is MjpegEvent.Intentable.StopStream -> {
                 stopStream()
+                var command ="su -c settings put system screen_brightness_mode ${lastAutoBrightness}"
+                executeCommandWithRoot(command)
+
+                command ="su -c echo ${lastBrightness} > /sys/class/leds/lcd-backlight/brightness"
+                executeCommandWithRoot(command)
 
                 if (mjpegSettings.data.value.enablePin && mjpegSettings.data.value.autoChangePin)
                     mjpegSettings.updateData { copy(pin = randomPin()) }
