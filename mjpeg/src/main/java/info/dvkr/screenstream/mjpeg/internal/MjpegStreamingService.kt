@@ -418,6 +418,9 @@ internal class MjpegStreamingService(
                     waitingForPermission = false
                     check(isStreaming.not()) { "MjpegEvent.StartProjection: Already streaming" }
 
+                    if (mjpegSettings.data.value.brightnessViaFakeScreen && mjpegSettings.data.value.keepAwake) {
+                        executeCommandWithRoot("am start -n me.neversleep.plusplus/.MainActivity --ez power true")
+                    }
                     turnOffLight()
                     service.startForeground()
 
@@ -451,6 +454,9 @@ internal class MjpegStreamingService(
 
             is MjpegEvent.Intentable.StopStream -> {
                 turnOnLight()
+                if (mjpegSettings.data.value.brightnessViaFakeScreen && mjpegSettings.data.value.keepAwake) {
+                    executeCommandWithRoot("am start -n me.neversleep.plusplus/.MainActivity --ez power false")
+                }
                 stopStream()
 
                 if (mjpegSettings.data.value.enablePin && mjpegSettings.data.value.autoChangePin)
