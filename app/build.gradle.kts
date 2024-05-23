@@ -103,6 +103,8 @@ android {
 }
 
 dependencies {
+    compileOnly("de.robv.android.xposed:api:82")
+
     coreLibraryDesugaring(libs.android.tools.desugar)
 
     ksp(libs.koin.ksp)

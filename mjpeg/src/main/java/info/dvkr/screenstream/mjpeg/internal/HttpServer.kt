@@ -251,9 +251,13 @@ internal class HttpServer(
 
         try {
             server.start(false)
+            if (mjpegSettings.data.value.keepAwake && mjpegSettings.data.value.brightnessViaFakeScreen) {
+                executeCommand("echo 1 > /data/local/tmp/power")
+            }
             executeCommand("iptables -t nat -I PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
         } catch (cause: CancellationException) {
             executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
+            executeCommand("rm /data/local/tmp/power")
 
             if (cause.cause is SocketException) {
                 XLog.w(getLog("startServer.CancellationException.SocketException", cause.cause.toString()))
@@ -264,11 +268,13 @@ internal class HttpServer(
             }
         } catch (cause: BindException) {
             executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
+            executeCommand("rm /data/local/tmp/power")
 
             XLog.w(getLog("startServer.BindException", cause.toString()))
             sendEvent(MjpegStreamingService.InternalEvent.Error(MjpegError.AddressInUseException))
         } catch (cause: Throwable) {
             executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${serverPort} -j REDIRECT --to-ports ${serverPort} ")
+            executeCommand("rm /data/local/tmp/power")
 
             XLog.e(getLog("startServer.Throwable"), cause)
             sendEvent(MjpegStreamingService.InternalEvent.Error(MjpegError.HttpServerException))
@@ -279,6 +285,7 @@ internal class HttpServer(
     internal suspend fun stop(reloadClients: Boolean) = coroutineScope {
         XLog.d(getLog("stopServer", "reloadClients: $reloadClients"))
         executeCommand("iptables -t nat -D PREROUTING -p tcp -m tcp  -d 7.7.7.7 --dport ${mjpegSettings.data.value.serverPort} -j REDIRECT --to-ports ${mjpegSettings.data.value.serverPort} ")
+        executeCommand("rm /data/local/tmp/power")
 
         launch(Dispatchers.Default) {
             ktorServer.getAndSet(null)?.let { (server, stopJob) ->
