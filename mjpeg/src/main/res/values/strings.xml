@@ -153,4 +153,7 @@
     <string name="mjpeg_html_wrong_pin">Wrong pin!</string>
     <string name="mjpeg_html_address_blocked">Client address blocked</string>
     <string name="mjpeg_html_error_unspecified">Something went wrong. &lt;br&gt; Please reload page and try again.</string>
+
+    <string name="mjpeg_remote_control_accessibility_label">ScreenStream remote control</string>
+    <string name="mjpeg_remote_control_accessibility_description">Allow ScreenStream to perform remote taps and swipes while streaming.</string>
 </resources>

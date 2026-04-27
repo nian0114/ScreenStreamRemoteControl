@@ -118,23 +118,21 @@ internal class HttpServer(
 
     // 示例方法，当某个事件触发时执行
     private fun executeTapCommand(x: Int, y: Int, x0: Int?, y0: Int?) {
-        try {
-            var command = ""
-            XLog.d("executeTapCommand")
-            XLog.d(x)
-            XLog.d(y)
-            command = if (x0 == null && y0 == null) {
-                // 构建 shell 命令
-                "su -c input tap $x $y"
-            } else {
-                "su -c input swipe $x0 $y0 $x $y"
-            }
+        XLog.d("executeTapCommand")
+        XLog.d(x)
+        XLog.d(y)
 
-            // 执行命令
-            val ps = Runtime.getRuntime().exec(command)
-        } catch (e: IOException) {
-            e.printStackTrace()
+        val dispatched = when {
+            x0 == null && y0 == null -> RemoteControlAccessibilityService.tap(x, y)
+            x0 != null && y0 != null -> RemoteControlAccessibilityService.swipe(x0, y0, x, y)
+            else -> {
+                XLog.w("Invalid remote gesture coordinates: x0=$x0 y0=$y0 x=$x y=$y")
+                false
+            }
         }
+
+        if (dispatched.not())
+            XLog.w("Remote control accessibility service is not enabled or gesture dispatch failed")
     }
 
     // 示例方法，当某个事件触发时执行
